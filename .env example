@@ -1,0 +1,19 @@
+# banco de dados
+DB_USER=#usuário do banco de dados
+DB_PASSWORD=#senha do root
+DB_ROOT_PASSWORD=#senha do root
+DB_NAME=#nome do banco de dados
+DB_HOST=#servidor do banco de dados
+DB_DIALECT=#dialeto do banco de dados
+
+# servidor
+PORT=#3000
+
+# secret
+SESSION_SECRET=7c82b2fcb3f4626798cf5a4d2f2a8c6d
+
+# ambiente
+NODE_ENV=#development
+
+# adicionar dados
+ADICIONAR_DADOS=#true
