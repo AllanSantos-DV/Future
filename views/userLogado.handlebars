@@ -1,7 +1,8 @@
 <!-- Navbar -->
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="#">Seu Site</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <a class="navbar-brand" href="#">Future</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
@@ -28,18 +29,19 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form method="POST" action="/rota-de-edicao">
+                <form action="/users/update/{{usuario.id}}" method="POST">
                     <div class="form-group">
                         <label for="nome">Nome:</label>
-                        <input type="text" class="form-control" id="nome" name="nome" value="{{usuario.nome}}" required>
+                        <input type="text" class="form-control" id="nome" name="novoNome" value="{{usuario.nomeAtual}}">
                     </div>
-                    <div class="form-group"></div>
+                    <div class="form-group">
                         <label for="email">Email:</label>
-                        <input type="email" class="form-control" id="email" name="email" value="{{usuario.email}}" >
+                        <input type="text" class="form-control" id="email" name="novoEmail"
+                            value="{{usuario.emailAtual}}" readonly disabled>
                     </div>
                     <div class="form-group">
                         <label for="senha">Senha:</label>
-                        <input type="password" class="form-control" id="senha" name="senha">
+                        <input type="password" class="form-control" id="senha" name="senhaAtual" required>
                     </div>
                     <div class="form-group">
                         <label for="novaSenha">Nova Senha:</label>
@@ -47,9 +49,9 @@
                     </div>
                     <div class="form-group">
                         <label for="confirmarSenha">Confirmar Senha:</label>
-                        <input type="password" class="form-control" id="confirmarSenha" name="confirmarSenha">
-                    </div>
-                    <div class="d-flex">
+                        <input type="password" class="form-control" id="confirmarSenha">
+                    </div><br>
+                    <div class="d-flex justify-content-center">
                         <button type="submit" class="btn btn-primary me-2">Editar</button>
                         <button type="button" class="btn btn-danger " data-bs-dismiss="modal">Cancelar</button>
                     </div>
@@ -58,12 +60,14 @@
         </div>
     </div>
 </div>
+</div>
 
 <!-- Conteúdo -->
 <div class="jumbotron text-center">
-    <h1 class="display-4">Bem-vindo, {{usuario.nome}}!</h1>
+    <h1 class="display-4">Bem-vindo, {{usuario.nomeAtual}}!</h1>
     <p class="lead">Clique no botão abaixo para ver seu futuro e seu número da sorte.</p>
     <a href="/verFuturo" class="btn btn-primary" id="btnFuturo">Ver Futuro</a>
+    <button class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#createFutureModal">Criar Futuro</button>
 </div>
 
 <!-- Card do Futuro -->
@@ -78,24 +82,25 @@
 </div>
 {{/if}}
 
-<!-- Botão para abrir o modal de criação do futuro -->
-<button class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#createFutureModal">Criar Futuro</button>
-
 <!-- Modal para criar um futuro -->
-<div class="modal fade" id="createFutureModal" tabindex="-1" aria-labelledby="createFutureModalLabel" aria-hidden="true">
+<div class="modal fade" id="createFutureModal" tabindex="-1" aria-labelledby="createFutureModalLabel"
+    aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="createFutureModalLabel">Criar Futuro</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <form method="POST" action="/rota-para-criar-futuro">
                     <div class="form-group">
                         <label for="frase">Futuro:</label>
                         <textarea class="form-control" id="frase" name="frase"></textarea>
+                    </div><br>
+                    <div class="d-flex justify-content-center">
+                        <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal"
+                            aria-label="Close">Fechar</button>
+                        <button type="submit" class="btn btn-primary">Criar</button>
                     </div>
-                    <button type="submit" class="btn btn-primary">Criar</button>
                 </form>
             </div>
         </div>

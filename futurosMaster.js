@@ -5,8 +5,7 @@ const dados = [
     { frase: 'O futuro começa hoje, não amanhã.', numero: Math.floor(Math.random() * 100) },
     { frase: 'O futuro depende do que fazemos no presente.', numero: Math.floor(Math.random() * 100) },
     { frase: 'O futuro é criado por aquilo que você faz hoje, não amanhã.', numero: Math.floor(Math.random() * 100) },
-    { frase: 'O futuro tem muitos nomes. Para os fracos, é o inatingível. Para os temerosos, o desconhecido. Para os valentes é a oportunidade.', numero: Math.floor(Math.random() * 100) },
-    // Adicione mais objetos aqui conforme necessário
+    { frase: 'O futuro tem muitos nomes. Para os fracos, é o inatingível. Para os temerosos, o desconhecido. Para os valentes é a oportunidade.', numero: Math.floor(Math.random() * 100) }
 ];
 
 async function adicionarDados() {

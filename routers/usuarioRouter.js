@@ -11,6 +11,7 @@ router.get('/logout', usuarioServices.logout);
 
 router.post('/cadastro', usuarioServices.usuarioExiste, usuarioServices.criarUsuario);
 router.post('/login', usuarioServices.loginUsuario);
+router.post('/update/:id', usuarioServices.atualizarUsuario);
 
 
 
