@@ -12,8 +12,21 @@ const validarSenha = async (id, senha) => {
 
 const userAtual = async (id) => {
     const user = await usuarioControllers.buscarUsuarioPorId(id);
-    return { id: user.id, nomeAtual: user.nome, emailAtual: user.email };
+    const userLogado = {
+        id: user.id,
+        nomeAtual: user.nome,
+        emailAtual: user.email
+    };
+    if (user.futuros) {
+        userLogado.futuros = user.futuros.map(futuro => ({
+            ...futuro,
+            frase: futuro.dataValues.frase,
+            numero: futuro.dataValues.numero
+        }));
+    }
+    return userLogado;
 }
+
 
 // funções render
 const home = (req, res) => {
@@ -80,7 +93,10 @@ const userLogado = (req, res, next) => {
     res.redirect('/users/login');
 }
 
-const logout = (req, res) => {
+const logout = async (req, res) => {
+    const { usuario } = req.session;
+    const user = await usuarioControllers.buscarUsuarioPorId(usuario.id);
+    await user.setFuturos([]);
     req.session.destroy();
     res.redirect('/users/login');
 }

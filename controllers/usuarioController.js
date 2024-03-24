@@ -1,4 +1,5 @@
 const Usuarios = require('../database/modelos/usuarios');
+const Futuros = require('../database/modelos/futuros');
 const bcrypt = require('bcryptjs');
 
 const criarUsuario = async (user) => {
@@ -16,7 +17,9 @@ const listarUsuarios = async () => {
 }
 
 const buscarUsuarioPorId = async (id) => {
-    return await Usuarios.findByPk(id);
+    return await Usuarios.findByPk(id, {
+        include: Futuros
+    });
 }
 
 const atualizarUsuario = async (id, user) => {

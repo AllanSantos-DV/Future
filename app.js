@@ -5,7 +5,7 @@ const flash = require('connect-flash');
 
 // Importar rotas
 const usuariosRoutes = require('./routers/usuarioRouter');
-//const carrosRoutes = require('./routes/carrosRoutes');
+const futureRoutes = require('./routers/futureRouter');
 
 // Criar aplicativo
 const app = express();
@@ -38,7 +38,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // Configurar rotas
 app.use('/users', usuariosRoutes);
-//app.use('/carros', carrosRoutes);
+app.use('/future', futureRoutes);
 app.use(express.static('public'));
 
 module.exports = app;

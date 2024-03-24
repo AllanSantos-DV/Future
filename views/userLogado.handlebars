@@ -60,18 +60,18 @@
         </div>
     </div>
 </div>
-</div>
 
 <!-- Conteúdo -->
 <div class="jumbotron text-center">
     <h1 class="display-4">Bem-vindo, {{usuario.nomeAtual}}!</h1>
     <p class="lead">Clique no botão abaixo para ver seu futuro e seu número da sorte.</p>
-    <a href="/verFuturo" class="btn btn-primary" id="btnFuturo">Ver Futuro</a>
+    <a href="/future/" class="btn btn-primary" id="btnFuturo">Ver Futuro</a>
     <button class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#createFutureModal">Criar Futuro</button>
 </div>
 
 <!-- Card do Futuro -->
-{{#if futuro}}
+{{#if usuario.futuros}}
+{{#each usuario.futuros}}
 <div class="card">
     <div class="card-body">
         <h5 class="card-title">Seu Futuro</h5>
@@ -80,6 +80,7 @@
         <p class="card-text" id="numeroSorte">{{this.numero}}</p>
     </div>
 </div>
+{{/each}}
 {{/if}}
 
 <!-- Modal para criar um futuro -->
@@ -91,7 +92,7 @@
                 <h5 class="modal-title" id="createFutureModalLabel">Criar Futuro</h5>
             </div>
             <div class="modal-body">
-                <form method="POST" action="/rota-para-criar-futuro">
+                <form method="POST" action="/future/criar">
                     <div class="form-group">
                         <label for="frase">Futuro:</label>
                         <textarea class="form-control" id="frase" name="frase"></textarea>

@@ -1,4 +1,6 @@
+const { Op } = require('sequelize');
 const Futuros = require('../database/modelos/futuros');
+const Usuarios = require('../database/modelos/usuarios');
 
 const criarFuturo = async (futuro) => {
     return await Futuros.create(futuro);
@@ -10,6 +12,14 @@ const listarFuturos = async () => {
 
 const buscarFuturoPorId = async (id) => {
     return await Futuros.findByPk(id);
+}
+
+const buscarFuturosSemaId = async (id, futureIds) => {
+    return await Futuros.findAll(
+        { where: { id: { [Op.notIn]: futureIds } },
+            include: [{ model: Usuarios, where: { id: { [Op.ne]: id } } }]
+        }
+    );
 }
 
 const atualizarFuturo = async (id, futuro) => {
@@ -24,6 +34,7 @@ module.exports = {
     criarFuturo,
     listarFuturos,
     buscarFuturoPorId,
+    buscarFuturosSemaId,
     atualizarFuturo,
     deletarFuturo
 }

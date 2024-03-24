@@ -8,8 +8,7 @@ const PORT = process.env.PORT || 3000;
 initDb().then(() => {
     if (process.env.ADICIONAR_DADOS === 'true') {
         adicionarDados().then(() => {
-            console.log('Dados adicionados com sucesso!');
-            process.env.ADICIONAR_DADOS = 'false';
+            console.log('Alerta: Futuros ADM estão sendo adicionados!');
         }).catch(error => {
             console.error('Erro ao adicionar dados:', error);
         });
