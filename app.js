@@ -11,7 +11,10 @@ const futureRoutes = require('./routers/futureRouter');
 const app = express();
 
 // Configurar aplicativo
-app.engine('handlebars', exphbs.engine({ defaultLayout: 'main' }));
+app.engine('handlebars', exphbs.engine({
+    defaultLayout: 'main',
+    partialsDir: __dirname + '/views/includes/'
+}));
 app.set('view engine', 'handlebars');
 
 // Configuração da sessão

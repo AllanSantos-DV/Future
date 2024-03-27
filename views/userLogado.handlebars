@@ -1,109 +1,47 @@
-<!-- Navbar -->
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="#">Future</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav ml-auto">
-            <li class="nav-item">
-                <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#editUserModal">Editar Usuário</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/deletar-conta">Deletar Conta</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/users/logout">Deslogar</a>
-            </li>
-        </ul>
-    </div>
-</nav>
-
-<!-- Modal para editar usuário -->
-<div class="modal fade" id="editUserModal" tabindex="-1" aria-labelledby="editUserModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="editUserModalLabel">Editar Usuário</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form action="/users/update/{{usuario.id}}" method="POST">
-                    <div class="form-group">
-                        <label for="nome">Nome:</label>
-                        <input type="text" class="form-control" id="nome" name="novoNome" value="{{usuario.nomeAtual}}">
-                    </div>
-                    <div class="form-group">
-                        <label for="email">Email:</label>
-                        <input type="text" class="form-control" id="email" name="novoEmail"
-                            value="{{usuario.emailAtual}}" readonly disabled>
-                    </div>
-                    <div class="form-group">
-                        <label for="senha">Senha:</label>
-                        <input type="password" class="form-control" id="senha" name="senhaAtual" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="novaSenha">Nova Senha:</label>
-                        <input type="password" class="form-control" id="novaSenha" name="novaSenha">
-                    </div>
-                    <div class="form-group">
-                        <label for="confirmarSenha">Confirmar Senha:</label>
-                        <input type="password" class="form-control" id="confirmarSenha">
-                    </div><br>
-                    <div class="d-flex justify-content-center">
-                        <button type="submit" class="btn btn-primary me-2">Editar</button>
-                        <button type="button" class="btn btn-danger " data-bs-dismiss="modal">Cancelar</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
+<div id="div-video" class="background-video">
+    <video id="background-video" loop>
+        <source src="/imagens/future/usuarioLogado.mp4" type="video/mp4">
+    </video>
+    <div class="text-center" id="mensagem">Buscando respostas do futuro</div>
 </div>
+
+{{> nav-user}}
 
 <!-- Conteúdo -->
-<div class="jumbotron text-center">
-    <h1 class="display-4">Bem-vindo, {{usuario.nomeAtual}}!</h1>
+<div class="jumbotron text-center text-white">
+    <h1 class="display-4">Bem-vindo, {{usuario.nome}}!</h1>
     <p class="lead">Clique no botão abaixo para ver seu futuro e seu número da sorte.</p>
-    <a href="/future/" class="btn btn-primary" id="btnFuturo">Ver Futuro</a>
-    <button class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#createFutureModal">Criar Futuro</button>
-</div>
+    <div class="d-flex justify-content-center">
+        <form id="form-associar" action="/future/associar/{{usuario.id}}" method="post"
+            onsubmit="return showAnimation('mensagem', 'form-associar', 'div-video', 'background-video' )">
+            <button type="submit" class="btn btn-primary" id="btnFuturo">Ver Futuro</button>
+        </form>
+        <button class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#createFutureModal">Criar
+            Futuro</button>
+    </div>
+</div><br>
 
 <!-- Card do Futuro -->
-{{#if usuario.futuros}}
-{{#each usuario.futuros}}
-<div class="card">
-    <div class="card-body">
-        <h5 class="card-title">Seu Futuro</h5>
-        <p class="card-text" id="fraseFuturo">{{this.frase}}</p>
-        <h6 class="card-subtitle mb-2 text-muted">Seu Número da Sorte</h6>
-        <p class="card-text" id="numeroSorte">{{this.numero}}</p>
-    </div>
-</div>
-{{/each}}
-{{/if}}
-
-<!-- Modal para criar um futuro -->
-<div class="modal fade" id="createFutureModal" tabindex="-1" aria-labelledby="createFutureModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="createFutureModalLabel">Criar Futuro</h5>
-            </div>
-            <div class="modal-body">
-                <form method="POST" action="/future/criar">
-                    <div class="form-group">
-                        <label for="frase">Futuro:</label>
-                        <textarea class="form-control" id="frase" name="frase"></textarea>
-                    </div><br>
-                    <div class="d-flex justify-content-center">
-                        <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal"
-                            aria-label="Close">Fechar</button>
-                        <button type="submit" class="btn btn-primary">Criar</button>
-                    </div>
-                </form>
-            </div>
+<div class="d-flex justify-content-center">
+    {{#if usuario.futurosAssociado}}
+    {{#each usuario.futurosAssociado}}
+    <div class="card text-white bg-dark" style="width: 18rem;">
+        <div class="card-body text-center">
+            <h3 class="card-title">Seu Futuro:</h3>
+            <p class="card-text" id="fraseFuturo">{{this.frase}}</p>
+            <h6 class="card-subtitle mb-2">Seu Número da Sorte é</h6>
+            <p class="card-text" id="numeroSorte">{{this.numero}}</p>
         </div>
     </div>
+    {{/each}}
+    {{else}}
+    <div class="card" style="width: 18rem;">
+        <div class="card-body text-center">
+            <h5 class="card-title">Seu Futuro</h5>
+            <p class="card-text">Você ainda não tem um futuro.</p>
+        </div>
+    </div>
+    {{/if}}
 </div>
+
+{{> modal-future-users}}

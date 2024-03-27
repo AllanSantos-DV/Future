@@ -1,4 +1,5 @@
 const usuarioControllers = require('../controllers/usuarioController');
+const futurosController = require('../controllers/futuroController');
 const tryCatchWrapper = require('./tryCatch');
 
 // funções auxiliares
@@ -14,19 +15,25 @@ const userAtual = async (id) => {
     const user = await usuarioControllers.buscarUsuarioPorId(id);
     const userLogado = {
         id: user.id,
-        nomeAtual: user.nome,
-        emailAtual: user.email
-    };
-    if (user.futuros) {
-        userLogado.futuros = user.futuros.map(futuro => ({
-            ...futuro,
-            frase: futuro.dataValues.frase,
-            numero: futuro.dataValues.numero
-        }));
+        nome: user.nome,
+        email: user.email,
     }
+    const futuros = await futurosController.buscarFuturosSemaId(user.id);
+    if (futuros.length === 0) return userLogado;
+    const futuroAleatorio = futuros[Math.floor(Math.random() * futuros.length)];
+    if (!await futuroRepitido(user, futuroAleatorio)) await user.addFuturo(futuroAleatorio);
+    userLogado.futurosAssociado = [{
+        frase: futuroAleatorio.frase,
+        numero: futuroAleatorio.numero
+    }];
     return userLogado;
 }
 
+
+const futuroRepitido = (user, futuroAleatorio) => {
+    if (!user.futuros) return false;
+    return user.futuros.find(fut => fut.id === futuroAleatorio.id);
+}
 
 // funções render
 const home = (req, res) => {
@@ -41,10 +48,16 @@ const cadastro = (req, res) => {
     res.render('cadastro');
 }
 
-const userlogadoinicio = async (req, res) => {
-    const { id } = req.session.usuario;
+const usuarioLogado = async (req, res) => {
+    const { usuario } = req.session;
+    res.render('userLogado', { usuario : usuario });
+}
+
+const associarFuturo = async (req, res) => {
+    const { id } = req.params;
     const user = await userAtual(id);
-    res.render('userLogado', { usuario: user });
+    req.session.usuario = user;
+    res.redirect('/users/usuarios');
 }
 
 // funções de controle
@@ -72,37 +85,57 @@ const usuarioExiste = async (req, res, next) => {
 
 const loginUsuario = async (req, res) => {
     const { email, senha } = req.body;
-    const usuario = await usuarioControllers.buscarUsuarioPorEmail(email);
-    if (!usuario) {
+    const user = await usuarioControllers.buscarUsuarioPorEmail(email);
+    if (!user) {
         req.flash('error', 'Usuário não encontrado');
         return res.redirect('/users/login');
     }
-    if (!await validarSenha(usuario.id, senha)) {
+    if (!await validarSenha(user.id, senha)) {
         req.flash('error', 'Senha inválida');
         return res.redirect('/users/login');
     }
+    const usuario = {
+        id: user.id,
+        nome: user.nome,
+        email: user.email
+    }
     req.session.usuario = usuario;
-    res.redirect('usuarios');
+    res.redirect('/users/usuarios');
 }
 
-const userLogado = (req, res, next) => {
-    if (req.session.usuario) {
+const userLogado = async (req, res, next) => {
+    const { usuario } = req.session;
+    const { password } = req.body;
+    if (usuario && password) {
+        if (!await validarSenha(usuario.id, password)) {
+            req.flash('error', 'Senha inválida');
+            return res.redirect('/users/usuarios');
+        }
+        return next();
+    }
+    if (usuario) {
+        const userLogado = await usuarioControllers.buscarUsuarioPorId(usuario.id);
+        if (!userLogado || userLogado.id !== usuario.id || userLogado.email !== usuario.email) {
+            req.flash('error', 'Necessario logar novamente');
+            return res.redirect('/users/logout');
+        }
         return next();
     }
     req.flash('error', 'Usuário não logado');
     res.redirect('/users/login');
 }
 
+
+
+
+
 const logout = async (req, res) => {
-    const { usuario } = req.session;
-    const user = await usuarioControllers.buscarUsuarioPorId(usuario.id);
-    await user.setFuturos([]);
     req.session.destroy();
-    res.redirect('/users/login');
+    res.render('logout');
 }
 
 const atualizarUsuario = async (req, res) => {
-    const { id } = req.params;
+    const id = req.session.usuario.id;
     const { novoNome, senhaAtual, novaSenha } = req.body;
     if (!await validarSenha(id, senhaAtual)) {
         req.flash('error', 'Senha inválida');
@@ -122,28 +155,39 @@ const atualizarUsuario = async (req, res) => {
     res.redirect('/users/usuarios');
 }
 
+const renderizarDelete = (req, res) => {
+    res.render('delete');
+}
+
 const deletarUsuario = async (req, res) => {
-    const { id } = req.params;
+    const { id } = req.session.usuario;
+    if (!id) {
+        req.flash('error', 'Usuário não pode ser deletado');
+        return res.redirect('/users/login');
+    }
     await tryCatchWrapper(async () => {
         await usuarioControllers.deletarUsuario(id);
     },
-        'Usuário deletado com sucesso',
-        'Erro ao deletar usuário',
-        req
+    'Usuário deletado com sucesso',
+    'Erro ao deletar usuário',
+    req
     );
-    res.redirect('/usuarios');
+    req.session.destroy();
+    res.redirect('/users');
 }
 
 module.exports = {
     home,
     login,
     cadastro,
-    userlogadoinicio,
+    usuarioLogado,
+    associarFuturo,
     criarUsuario,
     usuarioExiste,
     loginUsuario,
     userLogado,
     logout,
+    renderizarDelete,
     atualizarUsuario,
     deletarUsuario
 }

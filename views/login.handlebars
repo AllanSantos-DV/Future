@@ -1,9 +1,17 @@
-<!-- Tela de Login -->
-<div class="container">
+<div id="div-video" class="background-video">
+    <video id="background-video" loop>
+        <source src="/imagens/future/login.mp4" type="video/mp4">
+    </video>
+    <div class="text-center" id="mensagem">Criando tunel do tempo</div>
+</div>
+
+
+<div class="container text-white">
     <div class="row justify-content-center">
         <div class="col-md-6">
             <h2 class="text-center">Login</h2>
-            <form action="login" method="POST">
+            <form id="form-login" action="login" method="POST"
+                onsubmit="return showAnimation('mensagem', 'form-login', 'div-video', 'background-video' )">
                 <div class="form-group">
                     <label for="email">Email:</label>
                     <input type="email" class="form-control" id="email" name="email" required>

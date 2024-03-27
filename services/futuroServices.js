@@ -5,7 +5,7 @@ const tryCatchWrapper = require('./tryCatch');
 const criarFuturo = async (req, res) => {
     const future = {
         frase: req.body.frase,
-        numero: Math.floor(Math.random() * 100)
+        numero: Math.floor(Math.random() * 1000000)
     }
     await tryCatchWrapper(async () => {
         const novoFuturo = await futurosController.criarFuturo(future);
@@ -16,22 +16,6 @@ const criarFuturo = async (req, res) => {
         'Erro ao criar e associar futuro',
         req
     );
-    await associarFuturo(req, res);
-}
-
-const associarFuturo = async (req, res) => {
-    const { usuario } = req.session;
-    const user = await usuarioControllers.buscarUsuarioPorId(usuario.id);
-    const futuresUser = await user.getFuturos();
-    const futuros = await futurosController.buscarFuturosSemaId(usuario.id, futuresUser.length > 0 ? futuresUser.map(futuro => futuro.id) : []);
-
-    if (futuros.length > 0) {
-        const futuroAleatorio = futuros[Math.floor(Math.random() * futuros.length)];
-        await user.setFuturos(futuroAleatorio);
-        req.flash('success', 'Futuro associado com sucesso');
-    }else{
-        req.flash('error', 'Não há futuros para associar');
-    }
     res.redirect('/users/usuarios');
 }
 
@@ -88,7 +72,6 @@ const deletarFuturo = async (req, res) => {
 module.exports = {
     criarFuturo,
     listarFuturos,
-    associarFuturo,
     buscarFuturoPorId,
     atualizarFuturo,
     deletarFuturo

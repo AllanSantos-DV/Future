@@ -14,11 +14,9 @@ const buscarFuturoPorId = async (id) => {
     return await Futuros.findByPk(id);
 }
 
-const buscarFuturosSemaId = async (id, futureIds) => {
+const buscarFuturosSemaId = async (id) => {
     return await Futuros.findAll(
-        { where: { id: { [Op.notIn]: futureIds } },
-            include: [{ model: Usuarios, where: { id: { [Op.ne]: id } } }]
-        }
+        { include: [{ model: Usuarios, where: { id: { [Op.ne]: id } } }] }
     );
 }
 
