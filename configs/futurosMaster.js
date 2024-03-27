@@ -1,5 +1,5 @@
-const Futuros = require('./database/modelos/futuros');
-const usuarioController = require('./controllers/usuarioController');
+const Futuros = require('../database/modelos/futuros');
+const usuarioController = require('../controllers/usuarioController');
 
 
 const dados = [

@@ -1,4 +1,14 @@
 {
+  "name": "@future/future",
+  "version": "1.0.0",
+  "description": "O Future é um aplicativo interativo onde os usuários podem criar e visualizar 'futuros' criados por outros usuários. No entanto, há um toque intrigante: você não pode visualizar os futuros que você mesmo criou. Isso cria um ambiente de compartilhamento e descoberta, permitindo aos usuários explorar uma variedade de futuros enquanto contribuem com suas próprias visões.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "keywords": [ "Future", "futuros", "compartilhamento", "descoberta", "visões", "criação", "visualização", "Node.js", "aplicativo" ],
+  "author": "Reinaldo, Allan",
+  "license": "MIT",
   "dependencies": {
     "connect-flash": "^0.1.1",
     "bcryptjs": "^2.4.3",

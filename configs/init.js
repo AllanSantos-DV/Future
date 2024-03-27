@@ -1,9 +1,9 @@
 // importando o arquivo de conexão com o banco de dados
-const { db } = require('./database/dbConect.js');
+const { db } = require('../database/dbConect.js');
 // importando os models
-require('./database/modelos/usuarios.js');
-require('./database/modelos/futuros.js');
-require('./database/modelos/relacao.js');
+require('../database/modelos/usuarios.js');
+require('../database/modelos/futuros.js');
+require('../database/modelos/relacao.js');
 
 // sincronizando o banco de dados
 const initDb = () => {

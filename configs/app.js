@@ -2,10 +2,11 @@ const express = require('express');
 const exphbs = require('express-handlebars');
 const session = require('express-session');
 const flash = require('connect-flash');
+const path = require('path');
 
 // Importar rotas
-const usuariosRoutes = require('./routers/usuarioRouter');
-const futureRoutes = require('./routers/futureRouter');
+const usuariosRoutes = require('../routers/usuarioRouter');
+const futureRoutes = require('../routers/futureRouter');
 
 // Criar aplicativo
 const app = express();
@@ -13,7 +14,7 @@ const app = express();
 // Configurar aplicativo
 app.engine('handlebars', exphbs.engine({
     defaultLayout: 'main',
-    partialsDir: __dirname + '/views/includes/'
+    partialsDir: path.join(__dirname, '../views/includes/')
 }));
 app.set('view engine', 'handlebars');
 
