@@ -114,8 +114,8 @@ const userLogado = async (req, res, next) => {
         return next();
     }
     if (usuario) {
-        const userLogado = await usuarioControllers.buscarUsuarioPorId(usuario.id);
-        if (!userLogado || userLogado.id !== usuario.id || userLogado.email !== usuario.email) {
+        const userBd = await usuarioControllers.buscarUsuarioPorId(usuario.id);
+        if (!userBd || userBd.id !== usuario.id || userBd.nome !== usuario.nome || userBd.email !== usuario.email) {
             req.flash('error', 'Necessario logar novamente');
             return res.redirect('/users/logout');
         }
@@ -124,10 +124,6 @@ const userLogado = async (req, res, next) => {
     req.flash('error', 'Usuário não logado');
     res.redirect('/users/login');
 }
-
-
-
-
 
 const logout = async (req, res) => {
     req.session.destroy();
@@ -146,7 +142,8 @@ const atualizarUsuario = async (req, res) => {
         senha: (!novaSenha || novaSenha.length === 0) ? senhaAtual : novaSenha,
     };
     await tryCatchWrapper(async () => {
-        await usuarioControllers.atualizarUsuario(id, user);
+        const userUpdate = await usuarioControllers.atualizarUsuario(id, user);
+        req.session.usuario.nome = userUpdate.nome;
     },
         'Usuário atualizado com sucesso',
         'Erro ao atualizar usuário',

@@ -25,7 +25,8 @@ const buscarUsuarioPorId = async (id) => {
 const atualizarUsuario = async (id, user) => {
     const senhaCriptografada = bcrypt.hashSync(user.senha, 8);
     user.senha = senhaCriptografada;
-    return await Usuarios.update(user, { where: { id } });
+    await Usuarios.update(user, { where: { id } });
+    return await Usuarios.findByPk(id);
 }
 
 const deletarUsuario = async (id) => {
