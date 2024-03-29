@@ -6,6 +6,8 @@ O Future é um aplicativo interativo onde os usuários podem criar e visualizar 
 
 ## Instalação
 
+Clone esse repositório e navegue para a pasta do projeto.
+
 Para instalar as dependências do projeto, execute o seguinte comando:
 
 ```bash
