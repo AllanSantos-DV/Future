@@ -12,11 +12,13 @@ jobs:
     environment: 
       name: production
     env:
-      DB_NAME: ${{ env.DB_NAME }}
-      DB_USER: ${{ env.DB_USER }}
-      DB_PASSWORD: ${{ env.DB_PASSWORD }}
-      DB_HOST: ${{ env.DB_HOST }}
-      DB_DIALECT: ${{ env.DB_DIALECT }}
+      DB_NAME: ${{ vars.DB_NAME }}
+      DB_USER: ${{ vars.DB_USER }}
+      DB_PASSWORD: ${{ vars.DB_PASSWORD }}
+      DB_HOST: ${{ vars.DB_HOST }}
+      SESSION_SECRET: ${{ vars.SESSION_SECRET }}
+      NODE_ENV: ${{ vars.NODE_ENV }}
+      ADICIONAR_DADOS: ${{ vars.ADICIONAR_DADOS }}
     strategy:
       matrix:
         node-version: [20.x]
@@ -27,8 +29,8 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
-    - name: Print DB_DIALECT
-      run: echo $DB_DIALECT
+    - name: Print name
+      run: echo $DB_NAME
     - run: npm ci
     - run: npm install
     - run: npm run build --if-present
