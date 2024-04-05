@@ -11,24 +11,20 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
+    env:  # Defina as variáveis de ambiente aqui
+      DB_NAME: ${{ secrets.DB_NAME }}
+      DB_USER: ${{ secrets.DB_USER }}
+      DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+      DB_HOST: ${{ secrets.DB_HOST }}
+      DB_DIALECT: ${{ env.DB_DIALECT }}
     strategy:
       matrix:
         node-version: [20.x]
-        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
-
     steps:
     - uses: actions/checkout@v3
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v3
-      env:
-        DB_NAME: ${{ secrets.DB_NAME }}
-        DB_USER: ${{ secrets.DB_USER }}
-        DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-        DB_HOST: ${{ secrets.DB_HOST }}
-        DB_DIALECT: ${{ secrets.DB_DIALECT }}
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
