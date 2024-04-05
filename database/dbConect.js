@@ -3,7 +3,7 @@ const env = dotenv.parsed;
 
 const Seq = require('sequelize');
 
-console.log(env.DB_NAME, env.DB_USER, env.DB_PASSWORD, env.DB_HOST); // debug
+console.log(process.env.DB_NAME, process.env.DB_USER, process.env.DB_PASSWORD, process.env.DB_HOST); // debug
 
 
 const db = new Seq(env.DB_NAME, env.DB_USER, env.DB_PASSWORD, {
