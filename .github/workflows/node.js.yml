@@ -27,6 +27,8 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
+    - name: Print DB_DIALECT
+      run: echo $DB_DIALECT
     - run: npm ci
     - run: npm install
     - run: npm run build --if-present
